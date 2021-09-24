@@ -5,9 +5,9 @@ with delegation_info_with_rn as (
     select address, delegated_amount from delegation_info_with_rn
         where rn = 1
 ), total_delegations as (
-    select sum(res.delegated_amount) as amount, sum(1.0) as num from delegation_info res
+    select sum(res.delegated_amount) as amount, sum(case res.delegated_amount > 0 when true then 1.0 else 0.0 end) as num from delegation_info res
 ), unvoted_delegations as (
-    select sum(res.delegated_amount) as amount, sum(1.0) as num from delegation_info res
+    select sum(res.delegated_amount) as amount, sum(case res.delegated_amount > 0 when true then 1.0 else 0.0 end) as num from delegation_info res
     where res.address not in (SELECT "voter" FROM uniswap_v2."GovernorAlpha_evt_VoteCast")
 )
 select
