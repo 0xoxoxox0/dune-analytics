@@ -19,7 +19,7 @@ select
         when true then coalesce(d.delegated_amount, 0)
         else coalesce(b.current_balance, 0) + coalesce(d.delegated_amount, 0)
     end as substantial_voting_power,
-    coalesce(b.address, d.address) not in (SELECT "voter" FROM compound_v2."GovernorAlpha_evt_VoteCast") as never_voted
+    coalesce(b.address, d.address) not in (SELECT "voter" FROM compound_v2."GovernorAlpha_evt_VoteCast" UNION SELECT "voter" FROM compound_v2."GovernorBravoDelegate_evt_VoteCast") as never_voted
 from balance_sort b
 full outer join delegation_sort d on d.address = b.address
 order by substantial_voting_power desc;

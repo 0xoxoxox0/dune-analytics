@@ -8,7 +8,7 @@ with delegation_info_with_rn as (
     select sum(res.delegated_amount) as amount, sum(1.0) as num from delegation_info res
 ), unvoted_delegations as (
     select sum(res.delegated_amount) as amount, sum(1.0) as num from delegation_info res
-    where res.address not in (SELECT "voter" FROM compound_v2."GovernorAlpha_evt_VoteCast")
+    where res.address not in (SELECT "voter" FROM compound_v2."GovernorAlpha_evt_VoteCast" UNION SELECT "voter" FROM compound_v2."GovernorBravoDelegate_evt_VoteCast")
 )
 select
     total.amount as total_delegation_amount,

@@ -20,4 +20,4 @@ select
     )
 from balance_sort b
 full outer join delegation_sort d on d.address = b.address
-where coalesce(b.address, d.address) not in (SELECT "voter" FROM compound_v2."GovernorAlpha_evt_VoteCast");
+where coalesce(b.address, d.address) not in (SELECT "voter" FROM compound_v2."GovernorAlpha_evt_VoteCast" UNION SELECT "voter" FROM compound_v2."GovernorBravoDelegate_evt_VoteCast");
